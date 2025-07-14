@@ -1,0 +1,79 @@
+# Traefik and SSL Configuration Guide
+
+This guide provides quick instructions on setting up Traefik as a reverse proxy and generating SSL certificates.
+
+## Table of Contents
+
+1. [Traefik Setup](#traefik-setup)
+2. [Generating SSL Certificates](#generating-ssl-certificates)
+3. [Adding SSL Certificates](#adding-ssl-certificates)
+
+## Traefik Setup
+
+### Installation
+
+Install Traefik using Docker:
+
+1. **Create a Docker network**
+
+   ```bash
+   docker network create traefik
+   ```
+2. **Create a traefik.yml configuration file**
+    ```yaml
+    api:
+        insecure: true
+        dashboard: true
+
+    entryPoints:
+        web:
+            address: ":80"
+        websecure:
+            address: ":443"
+
+    providers:
+        docker:
+            exposedByDefault: false
+            network: traefik
+        file:
+            directory: "/etc/traefik/dynamic"
+            watch: true
+
+    log:
+        level: "TRACE"
+    ```
+3. **Create a docker-compose.yml file**
+
+    ```yaml
+    services:
+        reverse-proxy:
+            image: traefik:v3.0
+            command: --configFile=/etc/traefik/traefik.yml
+            ports:
+            - 80:80
+            - 443:443
+            - 8080:8080
+            volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./traefik.yml:/etc/traefik/traefik.yml
+            - ./dynamic:/etc/traefik/dynamic/
+            - ./certs:/certs
+            networks:
+            - traefik
+
+        networks:
+        traefik:
+            external: true
+
+    ```
+4. **Run Traefik**
+    ```bash
+    docker-compose up -d
+    ```
+### Generating SSL Certificates
+Run the script: to generate a self-signed certificate for a domain:
+
+```bash
+chmod +x create-ssl.sh add-ssl.sh
+./create-ssl.sh domain.co
+```
