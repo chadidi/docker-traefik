@@ -15,6 +15,7 @@ services:
       - ./dynamic:/etc/traefik/dynamic/
       - ./certs:/certs
     environment:
+      - TZ=America/New_York
       - CF_API_EMAIL=${CF_API_EMAIL}
       - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     networks:
