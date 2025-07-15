@@ -1,0 +1,15 @@
+http:
+  middlewares:
+    dashboard-auth:
+      basicAuth:
+        users:
+          - "admin:$2y$05$uyYD/UavEEaZ.3iTiYOwaO/39CUC4Cg/tf9vE/P.pbRmzUQiT91Zi"  # Use the hash from step 1
+
+  routers:
+    dashboard:
+      rule: "PathPrefix(`/`)"
+      service: api@internal
+      entryPoints:
+        - web
+      middlewares:
+        - dashboard-auth

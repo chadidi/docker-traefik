@@ -1,7 +1,7 @@
 services:
   reverse-proxy:
     image: traefik:v3.0
-    command: --configFile=/etc/traefik/traefik.yml
+    command: --configFile=/etc/traefik/traefik.yml --providers.file.filename=dynamic/middlewares.yml
     ports:
       - 80:80
       - 443:443

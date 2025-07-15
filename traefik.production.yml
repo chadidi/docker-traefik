@@ -1,7 +1,5 @@
 api:
-  insecure: true
   dashboard: true
-  debug: false
 
 entryPoints:
   web:
@@ -13,9 +11,6 @@ entryPoints:
           scheme: https
   websecure:
     address: ":443"
-
-serversTransport:
-  insecureSkipVerify: true
 
 providers:
   docker:
@@ -35,3 +30,6 @@ certificatesResolvers:
       # caServer: https://acme-staging-v02.api.letsencrypt.org/directory # staging
       httpChallenge:
         entryPoint: web
+
+log:
+  level: INFO
