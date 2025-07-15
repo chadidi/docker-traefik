@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    command: --configFile=/etc/traefik/traefik.yml
+    command: --configFile=/etc/traefik/traefik.yml --providers.file.filename=dynamic/middlewares.yml
     ports:
       - 80:80
       - 443:443
